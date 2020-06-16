@@ -109,10 +109,11 @@ $(document).ready(function() {
     let work = $("#work-address").val();
     let mailing = $("#mailing-address").val();
 
-    if(!lastName || !firstName || !phoneNumber || !emailAddress || !physicalAddress){
+    if(!lastName || !firstName || !phoneNumber){
       alert("Empty or incorrect input");
       return;
     }
+
     $("input#new-first-name").val("");
     $("input#new-last-name").val("");
     $("input#new-phone-number").val("");
@@ -124,6 +125,23 @@ $(document).ready(function() {
     let addressObj = new Address(physicalAddress, work, mailing);
     let contact = new Contact(firstName, lastName, phoneNumber, emailAddress, addressObj)
     addressBook.addContact(contact);
+
     displayContactDetails(addressBook);
+
+    $("#new-work-address").hide();
+    $("#new-mailing-address").hide();
+
+    //Non-working if else logic branch
+    // if ($("#work-address")) {
+    //   $("#new-work-address").show();
+    // } else {
+    //   $("#new-work-address").hide();
+    // };
+
+    // if ($("#mailing-address").val == '') {
+    //   $("#new-mailing-address").show();
+    // } else {
+    //   $("#new-mailing-address").hide();
+    // };
   });
 });
