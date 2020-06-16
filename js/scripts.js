@@ -1,5 +1,4 @@
-
-  // Business Logic for AddressBook
+// Business Logic for AddressBook
 function AddressBook() {
   this.contacts = [];
   this.currentId = 0;
@@ -26,15 +25,6 @@ AddressBook.prototype.findContact = function(id) {
   return false;
 }
 
-  if(this.findContact(id)) {
-    this.findContact(id).firstName = firstName;
-    this.findContact(id).lastName = lastName;
-    this.findContact(id).phoneNumber = phoneNumber;
-  } else {
-    return false;
-  }
-
-
 AddressBook.prototype.deleteContact = function(id) {
   for (let i=0; i< this.contacts.length; i++) {
     if (this.contacts[i]) {     
@@ -46,7 +36,6 @@ AddressBook.prototype.deleteContact = function(id) {
   };
   return false;
 }
-
 
 // Business Logic for Contacts
 function Contact(firstName, lastName, phoneNumber) {
@@ -79,7 +68,7 @@ function showContact(contactId) {
   $(".phone-number").html(contact.phoneNumber);
   let buttons = $("#buttons");
   buttons.empty();
-  buttons.append("<button class='deleteButton' id=" +  + contact.id + ">Delete</button>");
+  buttons.append("<button class='deleteButton' id=" + contact.id + ">Delete</button>");
 }
 
 function attachContactListeners() {
