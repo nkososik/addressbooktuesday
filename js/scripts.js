@@ -77,7 +77,7 @@ function showContact(contactId) {
 
 function attachContactListeners() {
   $("ul#contacts").on("click", "li", function() {
-    showContact(this.id);
+    showContact(this.list);
   });
   $("#buttons").on("click", ".deleteButton", function() {
     addressBook.deleteContact(this.id);
