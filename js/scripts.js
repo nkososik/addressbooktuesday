@@ -38,10 +38,12 @@ AddressBook.prototype.deleteContact = function(id) {
 }
 
 // Business Logic for Contacts
-function Contact(firstName, lastName, phoneNumber) {
+function Contact(firstName, lastName, phoneNumber, emailAddress, physicalAddress) {
   this.firstName = firstName;
   this.lastName = lastName;
   this.phoneNumber = phoneNumber;
+  this.emailAddress = emailAddress;
+  this.physicalAddress = physicalAddress;
 }
 
 Contact.prototype.fullName = function() {
@@ -66,6 +68,8 @@ function showContact(contactId) {
   $(".first-name").html(contact.firstName);
   $(".last-name").html(contact.lastName);
   $(".phone-number").html(contact.phoneNumber);
+  $(".email-address").html(contact.emailAddress);
+  $(".physical-address").html(contact.physicalAddress);
   let buttons = $("#buttons");
   buttons.empty();
   buttons.append("<button class='deleteButton' id=" + contact.id + ">Delete</button>");
@@ -73,7 +77,7 @@ function showContact(contactId) {
 
 function attachContactListeners() {
   $("ul#contacts").on("click", "li", function() {
-    showContact(this.id);;
+    showContact(this.id);
   });
   $("#buttons").on("click", ".deleteButton", function() {
     addressBook.deleteContact(this.id);
@@ -89,15 +93,19 @@ $(document).ready(function(){
     let firstName = $("#new-first-name").val();
     let lastName = $("#new-last-name").val();
     let phoneNumber = $("#new-phone-number").val();
-    if(!lastName || !firstName || !phoneNumber){
+    let emailAddress = $("#new-email-address").val();
+    let physicalAddress = $("#new-physical-address").val();
+    if(!lastName || !firstName || !phoneNumber || !emailAddress || !physicalAddress){
       alert("Empty or incorrect input");
       return;
     }
     $("input#new-first-name").val("");
     $("input#new-last-name").val("");
     $("input#new-phone-number").val("");
+    $("input#new-email-address").val("");
+    $("input#new-physical-address").val("");
 
-    let contact = new Contact(firstName, lastName, phoneNumber);
+    let contact = new Contact(firstName, lastName, phoneNumber, emailAddress, physicalAddress);
     addressBook.addContact(contact);
     displayContactDetails(addressBook);
   });
