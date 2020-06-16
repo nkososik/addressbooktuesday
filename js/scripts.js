@@ -44,26 +44,32 @@ function Contact(firstName, lastName, phoneNumber, emailAddress, physicalAddress
   this.phoneNumber = phoneNumber;
   this.emailAddress = emailAddress;
   this.physicalAddress = physicalAddress;
+  }
+
+
+function Address(work, personal, mailing) {
+  this.work = work;
+  this.personal = personal;
+  this.mailing = mailing;
 }
 
 Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 }
 
-// User Interface Logic
-let addressBook = new AddressBook();
 
+// User Interface Logic
 function displayContactDetails(addressBookToDisplay) {
   let contactsList = $("ul#contacts");
   let htmlForContactInfo = "";
   addressBookToDisplay.contacts.forEach(function(contact) {
-    htmlForContactInfo += "<li id=" + contact.id + ">" + contact.firstName + " " + contact.lastName + "</li>";
+    htmlForContactInfo += "<li class=" + contact.id + ">" + contact.firstName + " " + contact.lastName + "</li>";
   });
   contactsList.html(htmlForContactInfo);
 }
 
-function showContact(contactId) {
-  const contact = addressBook.findContact(contactId);
+function showContact(contactId, addressBook) {
+  let contact = addressBook.findContact(contactId);
   $("#show-contact").show();
   $(".first-name").html(contact.firstName);
   $(".last-name").html(contact.lastName);
@@ -72,29 +78,34 @@ function showContact(contactId) {
   $(".physical-address").html(contact.physicalAddress);
   let buttons = $("#buttons");
   buttons.empty();
-  buttons.append("<button class='deleteButton' id=" + contact.id + ">Delete</button>");
+  buttons.append(`<button class='deleteButton ${contact.id}'>Delete</button>`);
 }
 
-function attachContactListeners() {
+function attachContactListeners(addressBook) {
   $("ul#contacts").on("click", "li", function() {
-    showContact(this.list);
+    showContact($(this).attr("class"), addressBook);
   });
   $("#buttons").on("click", ".deleteButton", function() {
-    addressBook.deleteContact(this.id);
+    let id = $(this).attr("class");
+    let sanitizedId = id.slice(12);
+    addressBook.deleteContact(sanitizedId);
     $("#show-contact").hide();
     displayContactDetails(addressBook);
   });
 };
 
-$(document).ready(function(){
-  attachContactListeners();
-  $("form#new-contact").submit(function(event){
+$(document).ready(function() {
+  let addressBook = new AddressBook();
+  attachContactListeners(addressBook);
+  $("form#new-contact").submit(function(event) {
     event.preventDefault();
     let firstName = $("#new-first-name").val();
     let lastName = $("#new-last-name").val();
     let phoneNumber = $("#new-phone-number").val();
     let emailAddress = $("#new-email-address").val();
     let physicalAddress = $("#new-physical-address").val();
+    let work = $("#work-address").val();
+    let mailing = $("#mailing-address").val();
     if(!lastName || !firstName || !phoneNumber || !emailAddress || !physicalAddress){
       alert("Empty or incorrect input");
       return;
@@ -104,7 +115,10 @@ $(document).ready(function(){
     $("input#new-phone-number").val("");
     $("input#new-email-address").val("");
     $("input#new-physical-address").val("");
+    $("input#work-address").val("");
+    $("input#mailing-address").val("");
 
+    let addressList = new Address(work, personal, mailing);
     let contact = new Contact(firstName, lastName, phoneNumber, emailAddress, physicalAddress);
     addressBook.addContact(contact);
     displayContactDetails(addressBook);
