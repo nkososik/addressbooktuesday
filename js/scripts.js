@@ -38,16 +38,17 @@ AddressBook.prototype.deleteContact = function(id) {
 }
 
 // Business Logic for Contacts
-function Contact(firstName, lastName, phoneNumber, emailAddress, physicalAddress) {
+function Contact(firstName, lastName, phoneNumber, emailAddress, address) {
   this.firstName = firstName;
   this.lastName = lastName;
   this.phoneNumber = phoneNumber;
   this.emailAddress = emailAddress;
-  this.physicalAddress = physicalAddress;
+  this.address = address;
   }
 
 
-function Address(work, mailing) {
+function Address(physicalAddress, work, mailing) {
+  this.physicalAddress = physicalAddress;
   this.work = work;
   this.mailing = mailing;
 }
@@ -74,7 +75,9 @@ function showContact(contactId, addressBook) {
   $(".last-name").html(contact.lastName);
   $(".phone-number").html(contact.phoneNumber);
   $(".email-address").html(contact.emailAddress);
-  $(".physical-address").html(contact.physicalAddress);
+  $(".physical-address").html(contact.address.physicalAddress);
+  $(".work-address").html(contact.address.work);
+  $(".mailing-address").html(contact.address.mailing);
   let buttons = $("#buttons");
   buttons.empty();
   buttons.append(`<button class='deleteButton ${contact.id}'>Delete</button>`);
@@ -105,6 +108,7 @@ $(document).ready(function() {
     let physicalAddress = $("#new-physical-address").val();
     let work = $("#work-address").val();
     let mailing = $("#mailing-address").val();
+
     if(!lastName || !firstName || !phoneNumber || !emailAddress || !physicalAddress){
       alert("Empty or incorrect input");
       return;
@@ -117,8 +121,8 @@ $(document).ready(function() {
     $("input#work-address").val("");
     $("input#mailing-address").val("");
 
-    let addressList = new Address(work, mailing);
-    let contact = new Contact(firstName, lastName, phoneNumber, emailAddress, physicalAddress);
+    let addressObj = new Address(physicalAddress, work, mailing);
+    let contact = new Contact(firstName, lastName, phoneNumber, emailAddress, addressObj)
     addressBook.addContact(contact);
     displayContactDetails(addressBook);
   });
