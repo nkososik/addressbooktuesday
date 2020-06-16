@@ -47,9 +47,8 @@ function Contact(firstName, lastName, phoneNumber, emailAddress, physicalAddress
   }
 
 
-function Address(work, personal, mailing) {
+function Address(work, mailing) {
   this.work = work;
-  this.personal = personal;
   this.mailing = mailing;
 }
 
@@ -118,7 +117,7 @@ $(document).ready(function() {
     $("input#work-address").val("");
     $("input#mailing-address").val("");
 
-    let addressList = new Address(work, personal, mailing);
+    let addressList = new Address(work, mailing);
     let contact = new Contact(firstName, lastName, phoneNumber, emailAddress, physicalAddress);
     addressBook.addContact(contact);
     displayContactDetails(addressBook);
